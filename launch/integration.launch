@@ -1,0 +1,6 @@
+<launch>
+	
+	<node name="phasespace_imu_integration_node" pkg="phasespace_imu_integration" type="phasespace_imu_integration_node" args="0" output="screen" />
+	
+
+</launch>
