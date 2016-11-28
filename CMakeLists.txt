@@ -48,10 +48,18 @@ include_directories(
 	include
 )
 
+
+# Executable for Reactive Grasp
 add_executable(phasespace_imu_integration_node src/main.cpp src/listener_imu_glove.cpp src/listener_tf.cpp )
-
 add_dependencies(phasespace_imu_integration_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
 target_link_libraries(phasespace_imu_integration_node
+  ${catkin_LIBRARIES}
+)
+
+
+# Executable for SH reconstruction
+add_executable(phasespace_glove_integration_node src/main_glove.cpp src/listener_imu_glove.cpp src/listener_phase_space.cpp )
+add_dependencies(phasespace_glove_integration_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(phasespace_glove_integration_node
   ${catkin_LIBRARIES}
 )

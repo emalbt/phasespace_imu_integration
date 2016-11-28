@@ -2,7 +2,7 @@
 #include <boost/asio.hpp>
 
 // my headers
-#include "listener_tf.h"
+#include "listener_phase_space.h"
 #include "listener_imu_glove.h"
 
 
@@ -52,10 +52,10 @@ int main(int argc, char **argv)
 
 	ros::NodeHandle n;
 
-	phase_space_tf PStf;
+	phase_space PS;
 	// imu_glove IG;
 
-    std::string s;
+  std::string s;
 
 	while(ros::ok())
 	{
@@ -67,7 +67,7 @@ int main(int argc, char **argv)
             {
                 std::cout<<"\n\n# Experiment"<<std::endl;
                 cin >> s;  
-                PStf.openFile(s);
+                PS.openFile(s);
                 // IG.openFiles(s);
             } 
 
@@ -75,14 +75,12 @@ int main(int argc, char **argv)
         	if(x == 'c')
             {   
 
-                PStf.closeFile();
+                PS.closeFile();
                 // IG.closeFiles();
                 std::cout << "CLOSE FILE\n" <<std::endl;
             }
         }
 
-
-        PStf.saveData();
         ros::spinOnce();
         
 	}// end while()

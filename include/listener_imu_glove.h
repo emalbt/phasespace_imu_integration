@@ -24,7 +24,7 @@ public:
 
 	int kbhit(void);
 
-	void openFiles();
+	void openFiles(std::string s);
 
 	void closeFiles();
 

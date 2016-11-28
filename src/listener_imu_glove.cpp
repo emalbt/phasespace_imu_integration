@@ -22,14 +22,12 @@ imu_glove::~imu_glove()
 
 /*********************************************************************/
 
-void imu_glove::openFiles()
+void imu_glove::openFiles(std::string s)
 {
-  std::string s, s1, s2;
+  std::string s1, s2;
 
   flag_write_ = true;
 
-  std::cout<<"\n\n# Experiment"<<::endl;
-  cin >> s;
   s1 = pkg_path_ + "/measurements/" + s + "_acc.txt";
   s2 = pkg_path_ + "/measurements/" + s + "_gyro.txt";
   fileAcc_ = fopen(s1.c_str(),"w");
@@ -45,8 +43,6 @@ void imu_glove::closeFiles()
           
   fclose(fileAcc_);
   fclose(fileGyro_);
-  std::cout << "\n\nCLOSE FILE" <<std::endl;
-
 }
 
 /*********************************************************************/

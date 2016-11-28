@@ -8,6 +8,7 @@
 #include <csignal>
 #include <ros/console.h>
 #include <ros/ros.h>
+#include <ros/package.h>
 #include <tf/transform_listener.h>
 
 
@@ -24,6 +25,17 @@ public:
 
 	void saveData();
 
+	void openFile(std::string s);
+
+	void closeFile();
+
+	FILE* fileTf_;
+
 	tf::TransformListener listener_;
+
+	bool flag_write_;
+
+	std::string pkg_path_;	
+
 
 };

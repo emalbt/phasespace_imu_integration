@@ -9,6 +9,7 @@
 
 #include <ros/console.h>
 #include <ros/ros.h>
+#include <ros/package.h>
 #include <std_msgs/String.h>
 #include <phasespace_imu_integration/PhaseSpaceMarkerArray.h>
 
@@ -16,9 +17,6 @@
 
 class phase_space
 {
-	ros::NodeHandle ph_sp_;
-
-	ros::Subscriber subscribe_phace_;
 
 
 
@@ -29,8 +27,21 @@ public:
 
 	~phase_space();
 
-	showData(phasespace_imu_integration::PhaseSpaceMarkerArray p);
+	void showData(phasespace_imu_integration::PhaseSpaceMarkerArray p);
 
+	void openFile(std::string s);
+
+	void closeFile();
+
+	ros::NodeHandle ph_sp_;
+
+	ros::Subscriber subscribe_phace_;
+
+	FILE* fileMarkers_;
+
+	bool flag_write_;
+
+	std::string pkg_path_;	
 
 	
 };
