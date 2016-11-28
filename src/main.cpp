@@ -1,4 +1,5 @@
 #include <ros/ros.h>
+#include <ros/rate.h>
 #include <boost/asio.hpp>
 
 // my headers
@@ -46,16 +47,18 @@ int kbhit(void)
 //-----------------------------------------------------
 int main(int argc, char **argv)
 {
-	char x;
 
-	ros::init(argc, argv, "phasespace_imu_integration_node");
+    ros::init(argc, argv, "phasespace_imu_integration_node");
 
-	ros::NodeHandle n;
+    ros::NodeHandle n;
 
-	phase_space_tf PStf;
-	// imu_glove IG;
+    phase_space_tf PStf;
+    imu_glove IG;
 
     std::string s;
+	char x;
+
+    ros::Rate r(100);
 
 	while(ros::ok())
 	{
@@ -68,22 +71,25 @@ int main(int argc, char **argv)
                 std::cout<<"\n\n# Experiment"<<std::endl;
                 cin >> s;  
                 PStf.openFile(s);
-                // IG.openFiles(s);
+                IG.openFiles(s);
             } 
 
             
         	if(x == 'c')
             {   
-
                 PStf.closeFile();
-                // IG.closeFiles();
+                IG.closeFiles();
                 std::cout << "CLOSE FILE\n" <<std::endl;
             }
         }
 
 
         PStf.saveData();
+        IG.saveDataAcc();
+        IG.saveDataGyro();
         ros::spinOnce();
+        
+        r.sleep();
         
 	}// end while()
 

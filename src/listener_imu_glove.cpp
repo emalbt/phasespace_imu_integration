@@ -6,8 +6,8 @@ imu_glove::imu_glove()
 {
 	flag_write_ = false;
 
-	sub_acc_ = n_.subscribe("/qb_class_imu/acc", 1000, &imu_glove::saveDataAcc, this);
-	sub_gyro_ = n_.subscribe("/qb_class_imu/gyro", 1000, &imu_glove::saveDataGyro, this);
+	sub_acc_ = n_.subscribe("/qb_class_imu/acc", 1000, &imu_glove::callbackAcc, this);
+	sub_gyro_ = n_.subscribe("/qb_class_imu/gyro", 1000, &imu_glove::callbackGyro, this);
 
   pkg_path_ = ros::package::getPath("phasespace_imu_integration");
 
@@ -45,41 +45,56 @@ void imu_glove::closeFiles()
   fclose(fileGyro_);
 }
 
+
 /*********************************************************************/
 
 
-void imu_glove::saveDataAcc(qb_interface::inertialSensorArray imu)
+void imu_glove::saveDataAcc()
 {
-	int i=0;
+  if(flag_write_)
+  {
+    for (int i = 0; i<acc_.m.size(); i++)
+    {
+        fprintf(fileAcc_, "%f\t", acc_.m[i].x);
+        fprintf(fileAcc_, "%f\t", acc_.m[i].y);
+        fprintf(fileAcc_, "%f\t", acc_.m[i].z);
+    }
+      fprintf(fileAcc_, "\n");
+  }
 
-	if(flag_write_)
-	{
-		for (i = 0; i<imu.m.size(); i++)
-		{
-    		fprintf(fileAcc_, "%f\t", imu.m[i].x);
-    		fprintf(fileAcc_, "%f\t", imu.m[i].y);
-    		fprintf(fileAcc_, "%f\t", imu.m[i].z);
-		}
-  		fprintf(fileAcc_, "\n");
-	}
+}
 
+
+/*********************************************************************/
+
+
+void imu_glove::saveDataGyro()
+{
+  if(flag_write_)
+  {
+    for (int j = 0; j<gyro_.m.size(); j++)
+    {
+        fprintf(fileGyro_, "%f\t", gyro_.m[j].x);
+        fprintf(fileGyro_, "%f\t", gyro_.m[j].y);
+        fprintf(fileGyro_, "%f\t", gyro_.m[j].z);
+      }
+      fprintf(fileGyro_, "\n");
+  }
+}
+
+
+/*********************************************************************/
+
+
+void imu_glove::callbackAcc(qb_interface::inertialSensorArray imu_tmp)
+{
+    acc_ = imu_tmp;
 }
 
 /*********************************************************************/
 
 
-void imu_glove::saveDataGyro(qb_interface::inertialSensorArray imu)
+void imu_glove::callbackGyro(qb_interface::inertialSensorArray imu_tmp)
 {
-	int j=0;
-
-	if(flag_write_)
-	{
-		for (j = 0; j<imu.m.size(); j++)
-		{
-    		fprintf(fileGyro_, "%f\t", imu.m[j].x);
-    		fprintf(fileGyro_, "%f\t", imu.m[j].y);
-    		fprintf(fileGyro_, "%f\t", imu.m[j].z);
-  		}
-  		fprintf(fileGyro_, "\n");
-  }
+    gyro_=imu_tmp;	
 }

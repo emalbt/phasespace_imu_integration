@@ -11,6 +11,7 @@
 #include <ros/package.h>
 #include <tf/transform_listener.h>
 
+#include <qb_interface/inertialSensorArray.h>
 
 
 class phase_space_tf
@@ -29,13 +30,18 @@ public:
 
 	void closeFile();
 
-	FILE* fileTf_;
+	void checkGlove(qb_interface::inertialSensorArray imu);
+
 
 	tf::TransformListener listener_;
 
 	bool flag_write_;
+	bool flag_glove_;
 
 	std::string pkg_path_;	
+
+	FILE* fileTf_rotation_;
+	FILE* fileTf_traslation_;
 
 
 };
