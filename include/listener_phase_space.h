@@ -31,6 +31,8 @@ public:
 
 	void openFile(std::string s);
 
+	void saveData();
+
 	void closeFile();
 
 	ros::NodeHandle ph_sp_;
@@ -40,8 +42,9 @@ public:
 	FILE* fileMarkers_;
 
 	bool flag_write_;
+	bool flag_glove_;
 
 	std::string pkg_path_;	
 
-	
+	phasespace_imu_integration::PhaseSpaceMarkerArray m_;	
 };

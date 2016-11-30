@@ -9,6 +9,8 @@ phase_space::phase_space()
     pkg_path_ = ros::package::getPath("phasespace_imu_integration");
 
     flag_write_ = false;
+    flag_glove_ = false;
+
 
 }
 
@@ -19,6 +21,27 @@ phase_space::~phase_space()
 {
 
 }
+
+
+/*********************************************************************/
+
+void phase_space::saveData()
+{
+
+	if(flag_write_)
+	{
+	    for(int i=0; i<m_.markers.size(); i++)
+		{	
+			std::cout<<"marker: " << m_.markers[i].id << std::endl;
+			// ROS_INFO("point %d : %f %f %f", p.markers[i].id, p.markers[i].point.x, p.markers[i].point.y, p.markers[i].point.z);
+			fprintf(fileMarkers_, "%d\t%f\t%f\t%f", m_.markers[i].id, m_.markers[i].point.x, m_.markers[i].point.y, m_.markers[i].point.z );
+			
+		}	
+		fprintf(fileMarkers_, "\n");
+	}
+
+}
+
 
 
 /*********************************************************************/
@@ -48,20 +71,7 @@ void phase_space::closeFile()
 
 void phase_space::showData(phasespace_imu_integration::PhaseSpaceMarkerArray p)
 {
-
-	for(int i=0; i<p.markers.size(); i++)
-	{	
-		std::cout<<"marker: " << p.markers[i].id << std::endl;
-		// ROS_INFO("point %d : %f %f %f", p.markers[i].id, p.markers[i].point.x, p.markers[i].point.y, p.markers[i].point.z);
-		if(flag_write_)
-		{
-			fprintf(fileMarkers_, "%d\t%f\t%f\t%f", p.markers[i].id, p.markers[i].point.x, p.markers[i].point.y, p.markers[i].point.z );
-		}
-	}
-
-	if(flag_write_)
-		fprintf(fileMarkers_, "\n");
-
+	m_ = p;
 }
 
 

@@ -1,4 +1,5 @@
 #include <ros/ros.h>
+#include <ros/rate.h>
 #include <boost/asio.hpp>
 
 // my headers
@@ -8,7 +9,7 @@
 
 
 //-----------------------------------------------------
-//                                             	  kbhit
+//                                                kbhit
 //-----------------------------------------------------
 int kbhit(void) 
 {
@@ -42,47 +43,54 @@ int kbhit(void)
 
 
 //-----------------------------------------------------
-//                                             	   main
+//                                                 main
 //-----------------------------------------------------
 int main(int argc, char **argv)
 {
-	char x;
 
-	ros::init(argc, argv, "phasespace_imu_integration_node");
+    ros::init(argc, argv, "phasespace_imu_integration_node");
 
-	ros::NodeHandle n;
+    ros::NodeHandle n;
 
-	phase_space PS;
-	// imu_glove IG;
+    phase_space PS;
+    imu_glove IG;
 
-  std::string s;
+    std::string s;
+    char x;
 
-	while(ros::ok())
-	{
+    ros::Rate r(100);
 
-		if (kbhit())
-		{
-        	x = getchar();
-        	if(x == 'o')
-            {
-                std::cout<<"\n\n# Experiment"<<std::endl;
-                cin >> s;  
-                PS.openFile(s);
-                // IG.openFiles(s);
-            } 
+    while(ros::ok())
+    {
 
-            
-        	if(x == 'c')
-            {   
+    if (kbhit())
+    {
+        x = getchar();
+        if(x == 'o')
+        {
+            std::cout<<"\n\n# Experiment"<<std::endl;
+            cin >> s;  
+            PS.openFile(s);
+            IG.openFiles(s);
+        } 
 
-                PS.closeFile();
-                // IG.closeFiles();
-                std::cout << "CLOSE FILE\n" <<std::endl;
-            }
+
+        if(x == 'c')
+        {   
+            PS.closeFile();
+            IG.closeFiles();
+            std::cout << "CLOSE FILE\n" <<std::endl;
         }
+    }
 
+
+        PS.saveData();
+        IG.saveDataAcc();
+        IG.saveDataGyro();
         ros::spinOnce();
         
-	}// end while()
+        r.sleep();
+        
+    }// end while()
 
 }

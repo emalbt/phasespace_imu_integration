@@ -1,0 +1,7 @@
+<launch>
+
+	<node name="phasespace_glove_integration_node" pkg="phasespace_imu_integration" type="phasespace_glove_integration_node" args="0" output="screen" />
+
+	<node name="my_rviz" pkg="rviz" type="rviz" respawn="false" args="-d $(find phasespace_imu_integration)/launch/my_rviz.rviz" output="screen"/>
+
+</launch>
